@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Churn Prediction</title>
+</head>
+
+<body>
+    <h1>🔮 Churn Prediction App</h1>
+    <form action="/predict" method="POST">
+        {% for col, val in options.items() %}
+        <label>{{ col }}:</label><br> {% if val is iterable and val is not string %}
+        <select name="{{ col }}">
+                    {% for v in val %}
+                        <option value="{{ v }}">{{ v }}</option>
+                    {% endfor %}
+                </select><br><br> {% else %}
+        <input type="number" name="{{ col }}" value="{{ val }}"><br><br> {% endif %} {% endfor %}
+        <input type="submit" value="Predict Churn">
+    </form>
+
+    <br>
+    <h2>📜 Recent Predictions</h2>
+    {% if history %}
+    <table border="1" cellpadding="6">
+        <tr>
+            {% for k in history[0].keys() %}
+            <th>{{ k }}</th>
+            {% endfor %}
+        </tr>
+        {% for row in history %}
+        <tr>
+            {% for v in row.values() %}
+            <td>{{ v }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+    <br><a href="/download">⬇️ Download All</a> {% else %}
+    <p>No prediction history yet.</p>
+    {% endif %}
+</body>
+
+</html>

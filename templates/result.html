@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Prediction Result</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <h2>{{ prediction }}</h2>
+    <p>🔢 Probability of Churn: {{ probability }}</p>
+
+    <canvas id="churnChart" width="400" height="200"></canvas>
+
+    <script>
+        const churn = parseFloat("{{ churn_prob | default(0.0) }}");
+        const notChurn = parseFloat("{{ not_churn_prob | default(0.0) }}");
+
+        const ctx = document.getElementById('churnChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Churn', 'Not Churn'],
+                datasets: [{
+                    label: 'Probability',
+                    data: [churn, notChurn],
+                    backgroundColor: ['#e74c3c', '#2ecc71']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '📊 Churn Prediction Chart'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 1
+                    }
+                }
+            }
+        });
+    </script>
+
+
+    <br><a href="/">🔁 Try Another Prediction</a>
+</body>
+
+</html>
